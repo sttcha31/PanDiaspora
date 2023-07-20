@@ -4,6 +4,13 @@ from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.chrome.options import Options
+
+
+options = Options() ;
+prefs = {"download.default_directory" : "D:\PanDiaspora\metadata"};
+#example: prefs = {"download.default_directory" : "C:\Tutorial\down"};
+options.add_experimental_option("prefs",prefs);
 
 def getXPATH(boolean):
     if boolean == 'AND': return "/html/body/main/form/div/div/div[5]/div[3]/div/ul/li[1]/a"
@@ -11,7 +18,8 @@ def getXPATH(boolean):
     if boolean == 'NOT': return "/html/body/main/form/div/div/div[5]/div[3]/div/ul/li[3]/a"
 
 def createrepository(queries, booleans):
-    driver = webdriver.Chrome()
+    # driver = webdriver.Chrome()
+    driver = webdriver.Chrome(options=options);
     driver.get("https://pubmed.ncbi.nlm.nih.gov/advanced/")
     for index, term in enumerate(queries):
         driver.find_element(By.ID, "id_term").send_keys(term)
@@ -22,10 +30,21 @@ def createrepository(queries, booleans):
         driver.find_element(By.XPATH,  '/html/body/main/form/div/div/div[5]/div[3]/div/button').click()
         driver.find_element(By.XPATH, xpath).click()
         
-
-    driver.find_element(By.CLASS_NAME, "search-btn").click()
-    time.sleep(3)
     
+    driver.find_element(By.CLASS_NAME, "search-btn").click()
+   
+    driver.find_element(By.ID, "save-results-panel-trigger").click()
+    time.sleep(1)
+    driver.find_element(By.CLASS_NAME, 'action-panel-selector').click()
+    driver.find_element(By.XPATH, '/html/body/main/div[1]/div/form/div[1]/div[1]/select/option[2]').click()
+    
+    driver.find_element(By.XPATH, '/html/body/main/div[1]/div/form/div[2]/select').click()
+
+    driver.find_element(By.XPATH, "/html/body/main/div[1]/div/form/div[2]/select/option[5]").click()
+    
+    driver.find_element(By.XPATH, '/html/body/main/div[1]/div/form/div[3]/button[1]').click()
+    time.sleep(10)
+
     #download csv here
 
     #compine csv with abstaract here
