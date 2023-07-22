@@ -1,5 +1,6 @@
 import Container from "../Container";
 import Logo from "./Logo";
+import Usermenu from "./Usermenu";
 
 const Navbar = () => {
     return ( 
@@ -21,6 +22,7 @@ const Navbar = () => {
                         "
                     >
                         <Logo/>
+                        <Usermenu/>
                     </div>
                 </Container>
             </div>

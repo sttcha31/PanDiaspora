@@ -1,6 +1,8 @@
-import requests
+
+import re
 import time
-from bs4 import BeautifulSoup
+import csv 
+
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
@@ -30,25 +32,61 @@ def createrepository(queries, booleans):
         driver.find_element(By.XPATH,  '/html/body/main/form/div/div/div[5]/div[3]/div/button').click()
         driver.find_element(By.XPATH, xpath).click()
         
-    
+    #Search
     driver.find_element(By.CLASS_NAME, "search-btn").click()
-   
+    #Open Save Panel
     driver.find_element(By.ID, "save-results-panel-trigger").click()
+    #Wait for save panel
     time.sleep(1)
+    #All Results
     driver.find_element(By.CLASS_NAME, 'action-panel-selector').click()
     driver.find_element(By.XPATH, '/html/body/main/div[1]/div/form/div[1]/div[1]/select/option[2]').click()
-    
+    #CSV
     driver.find_element(By.XPATH, '/html/body/main/div[1]/div/form/div[2]/select').click()
-
     driver.find_element(By.XPATH, "/html/body/main/div[1]/div/form/div[2]/select/option[5]").click()
-    
     driver.find_element(By.XPATH, '/html/body/main/div[1]/div/form/div[3]/button[1]').click()
-    time.sleep(10)
+    #Open Save Panel
+    driver.find_element(By.ID, "save-results-panel-trigger").click()
+    #Wait for save panel
+    time.sleep(1)
+    #Abstract
+    driver.find_element(By.XPATH, '/html/body/main/div[1]/div/form/div[2]/select').click()
+    driver.find_element(By.XPATH, "/html/body/main/div[1]/div/form/div[2]/select/option[4]").click()
+    driver.find_element(By.XPATH, '/html/body/main/div[1]/div/form/div[3]/button[1]').click()
+    time.sleep(15)
 
     #download csv here
 
     #compine csv with abstaract here
+def format_abstracts(filename):
+    output, current, latest = [], "", ""
+    with open(filename, encoding="utf8") as f:
+        for line in f:
+            if re.match("^\d+[.]\s.*", line.strip()) and re.match("^\s*$", latest):
+                output.append(current)
+                current = ""
+            current = current + line.strip()
+            latest = line.strip()
+    output.append(current)
 
+    return output[1:]
+            
+    return output
+def combine_files(csvfile, abstract):
+    with open(csvfile, 'r') as read_obj, \
+        open('output_1.csv', 'w', newline='') as write_obj:
+        csv_reader = csv.reader(read_obj)
+        
+        
+        row0 = next(r)
+        row0.append('Abstract')
+        for index, article in enumerate(r):
+            article.append(abstract[index])
+    
+                
+                
+                
+    return
 
 queries = [
     r'(Human[MeSH Terms] OR human population[MeSH Terms] )', 
@@ -58,8 +96,12 @@ queries = [
     r'(y_10[Filter])'
     ]
 booleans = ['AND', 'AND', 'AND', 'AND']
-createrepository(queries, booleans)
+r"metadata\abstract-HumanMeSHT-set.txt"
+# createrepository(queries, booleans)
+inp = r"metadata\abstract-HumanMeSHT-set.txt"
+abstract = format_abstracts(inp)
 
+combine_files("metadata\csv-HumanMeSHT-set.csv", abstract)
 
 
 
