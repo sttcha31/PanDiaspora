@@ -2,7 +2,7 @@
 import re
 import time
 import csv 
-
+import pandas as pd
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
@@ -70,19 +70,11 @@ def format_abstracts(filename):
     output.append(current)
 
     return output[1:]
-            
-    return output
-def combine_files(csvfile, abstract):
-    with open(csvfile, 'r') as read_obj, \
-        open('output_1.csv', 'w', newline='') as write_obj:
-        csv_reader = csv.reader(read_obj)
-        
-        
-        row0 = next(r)
-        row0.append('Abstract')
-        for index, article in enumerate(r):
-            article.append(abstract[index])
-    
+
+def combine_files(csvfile, abstracts):
+    data_new = pd.read_csv(csvfile)
+    data_new['Abstracts'] = abstracts
+    data_new.to_csv('data_new.csv')
                 
                 
                 
