@@ -74,11 +74,8 @@ def format_abstracts(filename):
 def combine_files(csvfile, abstracts):
     data_new = pd.read_csv(csvfile)
     data_new['Abstracts'] = abstracts
-    data_new.to_csv('data_new.csv')
-                
-                
-                
-    return
+    data_new.to_csv('data_new.csv')             
+    
 
 queries = [
     r'(Human[MeSH Terms] OR human population[MeSH Terms] )', 

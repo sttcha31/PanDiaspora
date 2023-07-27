@@ -1,60 +1,52 @@
 "use client";
-
+import { useRouter } from 'next/navigation';
+import { usePathname } from "next/navigation";
+import { useMemo } from "react";
+import Usermenuitem from './Usermenuitem';
 const Usermenu = () => {
+    const pathname = usePathname();
+    const router = useRouter();
+    const routes = useMemo(() => [
+        {
+
+            label: 'Home',
+            active: pathname != '/',
+            href: '/'
+        },
+        {
+
+            label: 'About',
+            active: pathname != '/About',
+            href: '/About'
+        },
+        {
+
+            label: 'Dashboard',
+            active: pathname != '/Dasboard',
+            href: '/Dashboard'
+        },
+        {
+
+            label: 'Data',
+            active: pathname != '/Data',
+            href: '/Data'
+        },
+        {
+
+            label: 'Contact',
+            active: pathname != '/Contac',
+            href: '/Contact'
+        }
+    ], [pathname]);
     return ( 
         <div className="relative">
             <div className="flex flex-row items-center gap-3">
-                <div
-                    onClick={() => {}}
-                    className="
-                        hidden
-                        md:block
-                        text-sm
-                        font-semiblock
-                        py-3
-                        px-4
-                        rounded-full
-                        hover:bg-neutral-100
-                        transition
-                        cursor-pointer
-                    "
-                >
-                    About
-                </div>
-                <div
-                    onClick={() => {}}
-                    className="
-                        hidden
-                        md:block
-                        text-sm
-                        font-semiblock
-                        py-3
-                        px-4
-                        rounded-full
-                        hover:bg-neutral-100
-                        transition
-                        cursor-pointer
-                    "
-                >
-                    Data
-                </div>
-                <div
-                    onClick={() => {}}
-                    className="
-                        hidden
-                        md:block
-                        text-sm
-                        font-semiblock
-                        py-3
-                        px-4
-                        rounded-full
-                        hover:bg-neutral-100
-                        transition
-                        cursor-pointer
-                    "
-                >
-                    Contact
-                </div>
+                {routes.map((item) => (
+                    <Usermenuitem
+                        key={item.label}
+                        {...item}
+                    />
+                ))}
             </div>
         </div>
      );

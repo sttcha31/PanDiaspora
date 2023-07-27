@@ -27,6 +27,8 @@ const Navbar = () => {
                 </Container>
             </div>
         </div>
+
+
      );
 }
  
