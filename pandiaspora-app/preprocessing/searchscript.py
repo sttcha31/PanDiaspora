@@ -71,6 +71,10 @@ def format_abstracts(filename):
 
     return output[1:]
 
+def format_mesh(filname):
+    output = []
+    return output
+
 def combine_files(csvfile, abstracts):
     data_new = pd.read_csv(csvfile)
     data_new['Abstracts'] = abstracts
