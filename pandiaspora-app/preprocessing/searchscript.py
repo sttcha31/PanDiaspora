@@ -42,16 +42,24 @@ def createrepository(queries, booleans):
     driver.find_element(By.CLASS_NAME, 'action-panel-selector').click()
     driver.find_element(By.XPATH, '/html/body/main/div[1]/div/form/div[1]/div[1]/select/option[2]').click()
     #CSV
+    # driver.find_element(By.XPATH, '/html/body/main/div[1]/div/form/div[2]/select').click()
+    # driver.find_element(By.XPATH, "/html/body/main/div[1]/div/form/div[2]/select/option[5]").click()
+    # driver.find_element(By.XPATH, '/html/body/main/div[1]/div/form/div[3]/button[1]').click()
+    # #Open Save Panel
+    # driver.find_element(By.ID, "save-results-panel-trigger").click()
+    # #Wait for save panel
+    # time.sleep(1)
+    # #Abstract
+    # driver.find_element(By.XPATH, '/html/body/main/div[1]/div/form/div[2]/select').click()
+    # driver.find_element(By.XPATH, "/html/body/main/div[1]/div/form/div[2]/select/option[4]").click()
+    # driver.find_element(By.XPATH, '/html/body/main/div[1]/div/form/div[3]/button[1]').click()
+    # #Open Save Panel
+    # driver.find_element(By.ID, "save-results-panel-trigger").click()
+    # #Wait for save panel
+    # time.sleep(1)
+    #Mesh
     driver.find_element(By.XPATH, '/html/body/main/div[1]/div/form/div[2]/select').click()
-    driver.find_element(By.XPATH, "/html/body/main/div[1]/div/form/div[2]/select/option[5]").click()
-    driver.find_element(By.XPATH, '/html/body/main/div[1]/div/form/div[3]/button[1]').click()
-    #Open Save Panel
-    driver.find_element(By.ID, "save-results-panel-trigger").click()
-    #Wait for save panel
-    time.sleep(1)
-    #Abstract
-    driver.find_element(By.XPATH, '/html/body/main/div[1]/div/form/div[2]/select').click()
-    driver.find_element(By.XPATH, "/html/body/main/div[1]/div/form/div[2]/select/option[4]").click()
+    driver.find_element(By.XPATH, "/html/body/main/div[1]/div/form/div[2]/select/option[2]").click()
     driver.find_element(By.XPATH, '/html/body/main/div[1]/div/form/div[3]/button[1]').click()
     time.sleep(15)
 
@@ -90,11 +98,11 @@ queries = [
     ]
 booleans = ['AND', 'AND', 'AND', 'AND']
 r"metadata\abstract-HumanMeSHT-set.txt"
-# createrepository(queries, booleans)
-inp = r"metadata\abstract-HumanMeSHT-set.txt"
-abstract = format_abstracts(inp)
+createrepository(queries, booleans)
+# inp = r"metadata\abstract-HumanMeSHT-set.txt"
+# abstract = format_abstracts(inp)
 
-combine_files("metadata\csv-HumanMeSHT-set.csv", abstract)
+# combine_files("metadata\csv-HumanMeSHT-set.csv", abstract)
 
 
 
