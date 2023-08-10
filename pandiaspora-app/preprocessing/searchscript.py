@@ -1,4 +1,4 @@
-
+import os
 import re
 import time
 import csv 
@@ -18,7 +18,9 @@ def getXPATH(boolean):
     if boolean == 'AND': return "/html/body/main/form/div/div/div[5]/div[3]/div/ul/li[1]/a"
     if boolean == 'OR': return "/html/body/main/form/div/div/div[5]/div[3]/div/ul/li[2]/a"
     if boolean == 'NOT': return "/html/body/main/form/div/div/div[5]/div[3]/div/ul/li[3]/a"
-
+def wait_for_downloads(download_directory):
+    while any(file.endswith(".crdownload") for file in os.listdir(download_directory)):
+        time.sleep(1)
 def createrepository(queries, booleans):
     # driver = webdriver.Chrome()
     driver = webdriver.Chrome(options=options);
@@ -30,6 +32,7 @@ def createrepository(queries, booleans):
         except:
             break
         driver.find_element(By.XPATH,  '/html/body/main/form/div/div/div[5]/div[3]/div/button').click()
+        time.sleep(1)
         driver.find_element(By.XPATH, xpath).click()
         
     #Search
@@ -42,30 +45,38 @@ def createrepository(queries, booleans):
     driver.find_element(By.CLASS_NAME, 'action-panel-selector').click()
     driver.find_element(By.XPATH, '/html/body/main/div[1]/div/form/div[1]/div[1]/select/option[2]').click()
     #CSV
-    # driver.find_element(By.XPATH, '/html/body/main/div[1]/div/form/div[2]/select').click()
-    # driver.find_element(By.XPATH, "/html/body/main/div[1]/div/form/div[2]/select/option[5]").click()
-    # driver.find_element(By.XPATH, '/html/body/main/div[1]/div/form/div[3]/button[1]').click()
-    # #Open Save Panel
-    # driver.find_element(By.ID, "save-results-panel-trigger").click()
-    # #Wait for save panel
-    # time.sleep(1)
-    # #Abstract
-    # driver.find_element(By.XPATH, '/html/body/main/div[1]/div/form/div[2]/select').click()
-    # driver.find_element(By.XPATH, "/html/body/main/div[1]/div/form/div[2]/select/option[4]").click()
-    # driver.find_element(By.XPATH, '/html/body/main/div[1]/div/form/div[3]/button[1]').click()
-    # #Open Save Panel
-    # driver.find_element(By.ID, "save-results-panel-trigger").click()
-    # #Wait for save panel
-    # time.sleep(1)
+    driver.find_element(By.XPATH, '/html/body/main/div[1]/div/form/div[2]/select').click()
+    driver.find_element(By.XPATH, "/html/body/main/div[1]/div/form/div[2]/select/option[5]").click()
+    driver.find_element(By.XPATH, '/html/body/main/div[1]/div/form/div[3]/button[1]').click()
+    #Open Save Panel
+    driver.find_element(By.ID, "save-results-panel-trigger").click()
+    #Wait for save panel
+    time.sleep(1)
+    #Abstract
+    driver.find_element(By.XPATH, '/html/body/main/div[1]/div/form/div[2]/select').click()
+    driver.find_element(By.XPATH, "/html/body/main/div[1]/div/form/div[2]/select/option[4]").click()
+    driver.find_element(By.XPATH, '/html/body/main/div[1]/div/form/div[3]/button[1]').click()
+    #Open Save Panel
+    driver.find_element(By.ID, "save-results-panel-trigger").click()
+    #Wait for save panel
+    time.sleep(1)
     #Mesh
     driver.find_element(By.XPATH, '/html/body/main/div[1]/div/form/div[2]/select').click()
     driver.find_element(By.XPATH, "/html/body/main/div[1]/div/form/div[2]/select/option[2]").click()
     driver.find_element(By.XPATH, '/html/body/main/div[1]/div/form/div[3]/button[1]').click()
-    time.sleep(15)
+    wait_for_downloads("D:\PanDiaspora\metadata")
 
-    #download csv here
+def list_to_string(lst):
+    if not isinstance(lst, list):
+        raise ValueError("Input is not a list")
+    
+    # Convert each element of the list to a string
+    stringified_elements = [repr(element) for element in lst]
+    
+    # Join the elements with commas and surround them with square brackets
+    result = '[' + ', '.join(stringified_elements) + ']'
+    return result
 
-    #compine csv with abstaract here
 def format_abstracts(filename):
     output, current, latest = [], "", ""
     with open(filename, encoding="utf8") as f:
@@ -79,13 +90,22 @@ def format_abstracts(filename):
 
     return output[1:]
 
-def format_mesh(filname):
-    output = []
-    return output
+def format_mesh(filename):
+    aux, ouput, current, latest = [], [] , [], ""
+    with open(filename, encoding="utf8") as f:
+        for line in f:
+            if re.match("^PMID.*", line.strip()):
+                aux.append(list_to_string(current))
+                current = []
+            if re.match("^MH.*", line.strip()):
+                current.append(line.strip()[6:])
+    aux.append(list_to_string(current))
 
-def combine_files(csvfile, abstracts):
+    return aux[1:]
+
+def combine_files(csvfile, columnname, columndata):
     data_new = pd.read_csv(csvfile)
-    data_new['Abstracts'] = abstracts
+    data_new[columnname] = columndata
     data_new.to_csv('data_new.csv')             
     
 
@@ -98,11 +118,12 @@ queries = [
     ]
 booleans = ['AND', 'AND', 'AND', 'AND']
 r"metadata\abstract-HumanMeSHT-set.txt"
-createrepository(queries, booleans)
+# createrepository(queries, booleans)
 # inp = r"metadata\abstract-HumanMeSHT-set.txt"
 # abstract = format_abstracts(inp)
-
-# combine_files("metadata\csv-HumanMeSHT-set.csv", abstract)
+# combine_files("metadata\csv-HumanMeSHT-set.csv", "Abstracts", abstract)
+meshterms = format_mesh("D:\PanDiaspora\metadata\pubmed-HumanMeSHT-set.txt")
+combine_files("metadata\csv-HumanMeSHT-set.csv", "Mesh Terms", meshterms)
 
 
 
