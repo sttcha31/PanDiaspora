@@ -81,8 +81,7 @@ def server(input, output, session):
                                 x = "Country",
                                 y = 'Frequency',
                                 title = "Bar Graph of Country vs Frequency",
-                                barmode='stack',
-                                
+                                barmode='stack',              
                     )
                     fig.update_layout(
                         xaxis = dict(
@@ -91,23 +90,77 @@ def server(input, output, session):
                         )
                     )
                     return fig
+                if input.t() == "linegraph":
+                      file = pd.read_csv(r'D:\PanDiaspora\pandiaspora_shiny\Data\lineByCountry.csv')
+                      fig = px.line(
+                        file,
+                        x = "Year",
+                        y=file.columns[1:],
+                        
+                        title = "Line Graph of Year vs Frequency",
+                      ) 
+                      fig.update_yaxes(title_text="Publications per Year")
+                      fig.update_layout(height=600)
+                      return fig
     @output
     @render_widget
     def table():
-            df = pd.read_csv(r"D:\PanDiaspora\pandiaspora_shiny\Data\data_new.csv")
-            df = df.fillna('')
-            fig = go.Figure(data=[go.Table(
-            header=dict(values=list(["PMID", "Title", "First Author", "Journal/Book", "Publication Year", "Create Date", "DOI", "Mesh Terms"]),
-                        fill_color='paleturquoise',
-                        align='left'),
-            cells=dict(values=[df.PMID, df["Title"].values, df["First Author"].values, df["Journal/Book"].values, df["Publication Year"].values, df["Create Date"].values, df.DOI, df["Mesh Terms"].values],
-                    fill_color='lavender',
-                    align='left'))
-            ])  
-            fig.update_layout(
-                height=800  # Set the desired height in pixels
-            )
-            return fig
+            if input.x() == "country":
+                if input.t() == "bargraph":
+                    df = pd.read_csv(r'D:\PanDiaspora\pandiaspora_shiny\Data\barByCountry.csv')
+                    fig = go.Figure(data=[go.Table(
+                    header=dict(values=list(df.columns),
+                                fill_color='paleturquoise',
+                                align='left'),
+                    cells=dict(values=[df.PMID, df["Title"].values, df["First Author"].values, df["Journal/Book"].values, df["Publication Year"].values, df["Create Date"].values, df.DOI, df["Mesh Terms"].values],
+                            fill_color='lavender',
+                            align='left'))
+                    ])  
+                    fig.update_layout(
+                        height=800  # Set the desired height in pixels
+                    )
+                    return fig
+                if input.t() == "linegraph":
+                    df = pd.read_csv(r'D:\PanDiaspora\pandiaspora_shiny\Data\lineByCountry.csv')
+                    header_values = ["Year"] + list(df.columns[1:])
+                    cells_values = [df.Year] + [df[column] for column in df.columns[1:]]
+
+                    fig = go.Figure(data=[go.Table(
+                        header=dict(values=header_values,
+                                    fill_color='paleturquoise',
+                                    align='left',
+                                    width=50),
+                        cells=dict(values=cells_values,
+                                fill_color='lavender',
+                                align='left'))
+                    ])
+                    for i, column in enumerate(header_values):
+                        fig.update_traces(
+                            selector=dict(name=column),
+                            width=150  # Adjust the width as needed
+                        )
+                    fig.update_layout(
+                        height=800,
+                       
+                          # Set the desired height in pixels
+                    )
+                    return fig
+
+
+            # df = pd.read_csv(r"D:\PanDiaspora\pandiaspora_shiny\Data\data_new.csv")
+            # df = df.fillna('')
+            # fig = go.Figure(data=[go.Table(
+            # header=dict(values=list(["PMID", "Title", "First Author", "Journal/Book", "Publication Year", "Create Date", "DOI", "Mesh Terms"]),
+            #             fill_color='paleturquoise',
+            #             align='left'),
+            # cells=dict(values=[df.PMID, df["Title"].values, df["First Author"].values, df["Journal/Book"].values, df["Publication Year"].values, df["Create Date"].values, df.DOI, df["Mesh Terms"].values],
+            #         fill_color='lavender',
+            #         align='left'))
+            # ])  
+            # fig.update_layout(
+            #     height=800  # Set the desired height in pixels
+            # )
+            # return fig
                 
     # @output
     # @render.plot

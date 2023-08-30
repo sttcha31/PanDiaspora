@@ -1,0 +1,49 @@
+import csv
+import ast
+
+def string_to_list(s):
+    try:
+        # Use ast.literal_eval to safely evaluate the string and convert it to a list
+        result = ast.literal_eval(s)
+        if isinstance(result, list):
+            return result
+        else:
+            raise ValueError("Input is not a valid list")
+    except (ValueError, SyntaxError):
+        raise ValueError("Input is not in the correct format")
+
+field_names = ["Categorie", "Frequency"]
+categories = {
+    "maternal health": ["maternal health", "maternal", "pregnancy"],
+    "child health": ["child", "infant", "pediatric", "children"],
+    "infectious diseases": ["infectious", "infections", "infect", "communicable diseases"],
+    "cardiovascular diseases": ["cardiovascular", "heart", "circulatory"],
+}
+def split_data(filename):
+    data = {}
+    count = 0
+    with open(filename, 'r',  encoding="utf-8") as f:
+        datareader = csv.reader(f)
+        for row in datareader:
+            if count != 0:
+                for term in string_to_list(row[12]):
+                    for category in categories.keys():
+                        for example in categories[category]:
+                            if example in term :
+                                if category not in data:
+                                    data[category] = 1
+                                else:
+                                    data[category] = data[category] + 1  
+            count+=1
+        data2 =[]
+    for key in data:
+        data2.append((key, data[key]))    
+        data2 = sorted(data2)  
+    with open("D:/PanDiaspora/pandiaspora_shiny/Data/barByCategory.csv", "w", newline='') as out:
+        csv_out = csv.writer(out)
+        csv_out.writerow(field_names)
+        for row in data2:
+            csv_out.writerow(row)
+            out.flush()
+
+split_data("D:\PanDiaspora\pandiaspora_shiny\Data\data_new.csv")

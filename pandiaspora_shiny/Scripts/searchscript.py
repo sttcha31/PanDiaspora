@@ -10,7 +10,7 @@ from selenium.webdriver.chrome.options import Options
 
 
 options = Options() ;
-prefs = {"download.default_directory" : "D:\PanDiaspora\metadata"};
+prefs = {"download.default_directory" : "D:\PanDiaspora\pandiaspora_shiny\Rawdata"};
 #example: prefs = {"download.default_directory" : "C:\Tutorial\down"};
 options.add_experimental_option("prefs",prefs);
 
@@ -64,7 +64,7 @@ def createrepository(queries, booleans):
     driver.find_element(By.XPATH, '/html/body/main/div[1]/div/form/div[2]/select').click()
     driver.find_element(By.XPATH, "/html/body/main/div[1]/div/form/div[2]/select/option[2]").click()
     driver.find_element(By.XPATH, '/html/body/main/div[1]/div/form/div[3]/button[1]').click()
-    wait_for_downloads("D:\PanDiaspora\metadata")
+    wait_for_downloads("D:\PanDiaspora\pandiaspora_shiny\Rawdata")
 
 def list_to_string(lst):
     if not isinstance(lst, list):
@@ -118,12 +118,12 @@ queries = [
     ]
 booleans = ['AND', 'AND', 'AND', 'AND']
 r"metadata\abstract-HumanMeSHT-set.txt"
-# createrepository(queries, booleans)
+createrepository(queries, booleans)
 # inp = r"metadata\abstract-HumanMeSHT-set.txt"
 # abstract = format_abstracts(inp)
 # combine_files("metadata\csv-HumanMeSHT-set.csv", "Abstracts", abstract)
-meshterms = format_mesh("D:\PanDiaspora\metadata\pubmed-HumanMeSHT-set.txt")
-combine_files("metadata\csv-HumanMeSHT-set.csv", "Mesh Terms", meshterms)
+# meshterms = format_mesh("D:\PanDiaspora\metadata\pubmed-HumanMeSHT-set.txt")
+# combine_files("metadata\csv-HumanMeSHT-set.csv", "Mesh Terms", meshterms)
 
 
 
