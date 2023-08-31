@@ -23,4 +23,18 @@ The link do the dashboard can be found here :
 
 Coming Soon
 
+In the meantime you can look at some screenshots
+
+## Images
+### Bargraph of Year vs Frequency of Publications
+![Bargraph of Year vs Frequency of Publications](https://cdn.discordapp.com/attachments/803117277813145600/1146606071344021566/image.png)
+### Line Graph of Year vs Frequency of Publications
+![](https://cdn.discordapp.com/attachments/803117277813145600/1146606397933486162/image.png)
+### Bar Graph of Country vs Frequency of Publications
+![](https://cdn.discordapp.com/attachments/803117277813145600/1146606603227889785/image.png)
+### Linae Graph of Country vs Frequency of Publications
+![](https://cdn.discordapp.com/attachments/803117277813145600/1146614142409646200/image.png)
 ## Contact
+:e-mail: pandiaspora@mcgill.ca
+
+:e-mail: sttcha31@gmail.com

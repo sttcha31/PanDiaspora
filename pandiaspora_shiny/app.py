@@ -2,8 +2,13 @@ from shiny import App, render, ui
 from shinywidgets import output_widget, render_widget
 import pandas as pd
 import plotnine as gg
+from dash import Dash, dash_table
 import plotly.express as px
 import plotly.graph_objs as go
+import plotly.figure_factory as FF
+import seaborn as sns
+import matplotlib.pyplot as plt
+
 choices_select = {
     "year": "Year",
     "country": "Country",
@@ -121,31 +126,40 @@ def server(input, output, session):
                     )
                     return fig
                 if input.t() == "linegraph":
-                    df = pd.read_csv(r'D:\PanDiaspora\pandiaspora_shiny\Data\lineByCountry.csv')
-                    header_values = ["Year"] + list(df.columns[1:])
-                    cells_values = [df.Year] + [df[column] for column in df.columns[1:]]
+                    data = pd.read_csv(r'D:\PanDiaspora\pandiaspora_shiny\Data\lineByCountry.csv')
+                    # header_values = ["Year"] + list(df.columns[1:])
+                    # cells_values = [df.Year] + [df[column] for column in df.columns[1:]]
 
-                    fig = go.Figure(data=[go.Table(
-                        header=dict(values=header_values,
-                                    fill_color='paleturquoise',
-                                    align='left',
-                                    width=50),
-                        cells=dict(values=cells_values,
-                                fill_color='lavender',
-                                align='left'))
-                    ])
-                    for i, column in enumerate(header_values):
-                        fig.update_traces(
-                            selector=dict(name=column),
-                            width=150  # Adjust the width as needed
-                        )
-                    fig.update_layout(
-                        height=800,
+                    # fig = go.Figure(data=[go.Table(
+                    #     header=dict(values=header_values,
+                    #                 fill_color='paleturquoise',
+                    #                 align='left'),
+                    #     cells=dict(values=cells_values,
+                    #             fill_color='lavender',
+                    #             align='left'))
+                    # ])
+                    # for i, column in enumerate(header_values):
+                    #     fig.update_traces(
+                    #         selector=dict(name=column),
+                    #         width=150  # Adjust the width as needed
+                    #     )
+                    # fig.update_layout(
+                    #     height=800,
                        
-                          # Set the desired height in pixels
-                    )
-                    return fig
+                    #       # Set the desired height in pixels
+                    # )
+                    # return fig
+                    # Create a bar plot using Seaborn
+                    sns.set(style="whitegrid")
+                    plt.figure(figsize=(10, 6))
+                    sns.barplot(x="Year", y="USA", data=data)
 
+                    # Customize the plot
+                    plt.title("Bar Plot of Year vs USA")
+                    plt.xlabel("Year")
+                    plt.ylabel("USA")
+                    plt.xticks(rotation=45)
+                    return plt
 
             # df = pd.read_csv(r"D:\PanDiaspora\pandiaspora_shiny\Data\data_new.csv")
             # df = df.fillna('')
