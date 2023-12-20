@@ -36,7 +36,10 @@ def split_data(filename):
         '2020': {},
         '2021': {},
         '2022': {},
-        '2023': {}
+        '2023': {},
+        '2024': {},
+
+
     }   
     for key in data.keys():
         for countries in american_countries:
@@ -46,10 +49,15 @@ def split_data(filename):
         datareader = csv.reader(f)
         for row in datareader:
             if count != 0:
-                for term in string_to_list(row[12]):
+                for term in string_to_list(row[14]):
                     for country in american_countries:
                         if country in term:
-                             data[row[7]][country] = data[row[7]][country] + 1  
+                             try:
+                                data[row[8]][country] = data[row[8]][country] + 1
+                             except:
+                                data[row[8]] = {}
+                                data[row[8]][country] = 1
+                                  
             count+=1
     data2 =[]
     for key in data.keys():
@@ -57,11 +65,11 @@ def split_data(filename):
         for country in data[key]:
             temp.append(data[key][country])
         data2.append(temp)    
-    with open("D:/PanDiaspora/pandiaspora_shiny/Data/lineByCountry.csv", "w", newline='') as out:
+    with open(r"D:\PanDiaspora\pandiaspora_shiny\Data\lineByCountry.csv", "w", newline='') as out:
         csv_out = csv.writer(out)
         csv_out.writerow(field_names)
         for row in data2:
             csv_out.writerow(row)
             out.flush()
 
-split_data("D:\PanDiaspora\pandiaspora_shiny\Data\data_new.csv")
+split_data(r"D:\PanDiaspora\pandiaspora_shiny\Rawdata\data_new.csv")

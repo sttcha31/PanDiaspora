@@ -26,7 +26,7 @@ def split_data(filename):
         datareader = csv.reader(f)
         for row in datareader:
             if count != 0:
-                for term in string_to_list(row[12]):
+                for term in string_to_list(row[14]):
                     for category in categories.keys():
                         for example in categories[category]:
                             if example in term :
@@ -39,11 +39,11 @@ def split_data(filename):
     for key in data:
         data2.append((key, data[key]))    
         data2 = sorted(data2)  
-    with open("D:/PanDiaspora/pandiaspora_shiny/Data/barByCategory.csv", "w", newline='') as out:
+    with open(r"D:\PanDiaspora\pandiaspora_shiny\Data\barByCategory.csv", "w", newline='') as out:
         csv_out = csv.writer(out)
         csv_out.writerow(field_names)
         for row in data2:
             csv_out.writerow(row)
             out.flush()
 
-split_data("D:\PanDiaspora\pandiaspora_shiny\Data\data_new.csv")
+split_data(r"D:\PanDiaspora\pandiaspora_shiny\Rawdata\data_new.csv")

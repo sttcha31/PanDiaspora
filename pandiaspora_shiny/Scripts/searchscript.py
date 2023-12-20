@@ -7,17 +7,20 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.chrome.options import Options
+import os
+import glob
 
 
-options = Options() ;
-prefs = {"download.default_directory" : "D:\PanDiaspora\pandiaspora_shiny\Rawdata"};
+options = Options();
+prefs = {"download.default_directory" : r"D:\PanDiaspora\pandiaspora_shiny\Rawdata"};
 #example: prefs = {"download.default_directory" : "C:\Tutorial\down"};
 options.add_experimental_option("prefs",prefs);
 
+
 def getXPATH(boolean):
-    if boolean == 'AND': return "/html/body/main/form/div/div/div[5]/div[3]/div/ul/li[1]/a"
-    if boolean == 'OR': return "/html/body/main/form/div/div/div[5]/div[3]/div/ul/li[2]/a"
-    if boolean == 'NOT': return "/html/body/main/form/div/div/div[5]/div[3]/div/ul/li[3]/a"
+    if boolean == 'AND': return "/html/body/main/form/div/div/div[6]/div[3]/div/ul/li[1]"
+    if boolean == 'OR': return "/html/body/main/form/div/div/div[6]/div[3]/div/ul/li[2]"
+    if boolean == 'NOT': return "/html/body/main/form/div/div/div[6]/div[3]/div/ul/li[3]"
 def wait_for_downloads(download_directory):
     while any(file.endswith(".crdownload") for file in os.listdir(download_directory)):
         time.sleep(1)
@@ -31,9 +34,17 @@ def createrepository(queries, booleans):
             xpath = getXPATH(booleans[index]) 
         except:
             break
-        driver.find_element(By.XPATH,  '/html/body/main/form/div/div/div[5]/div[3]/div/button').click()
+        driver.find_element(By.XPATH,  '/html/body/main/form/div/div/div[6]/div[3]/div/button').click()
         time.sleep(1)
-        driver.find_element(By.XPATH, xpath).click()
+        errorcatch = False
+        while errorcatch == False:
+            try:   
+                driver.find_element(By.XPATH,  '/html/body/main/form/div/div/div[6]/div[3]/div/button').click()
+                driver.find_element(By.XPATH, xpath).click()
+                errorcatch = True
+            except:
+                errorcatch = False
+        
         
     #Search
     driver.find_element(By.CLASS_NAME, "search-btn").click()
@@ -64,7 +75,7 @@ def createrepository(queries, booleans):
     driver.find_element(By.XPATH, '/html/body/main/div[1]/div/form/div[2]/select').click()
     driver.find_element(By.XPATH, "/html/body/main/div[1]/div/form/div[2]/select/option[2]").click()
     driver.find_element(By.XPATH, '/html/body/main/div[1]/div/form/div[3]/button[1]').click()
-    wait_for_downloads("D:\PanDiaspora\pandiaspora_shiny\Rawdata")
+    wait_for_downloads(r"D:\PanDiaspora\pandiaspora_shiny\Rawdata")
 
 def list_to_string(lst):
     if not isinstance(lst, list):
@@ -103,11 +114,14 @@ def format_mesh(filename):
 
     return aux[1:]
 
-def combine_files(csvfile, columnname, columndata):
+def combine_abs(csvfile, columnname, columndata):
     data_new = pd.read_csv(csvfile)
     data_new[columnname] = columndata
-    data_new.to_csv('data_new.csv')             
-    
+    data_new.to_csv(r'D:\PanDiaspora\pandiaspora_shiny\Rawdata\abs.csv')             
+def combine_mesh(csvfile, columnname, columndata):
+    data_new = pd.read_csv(csvfile)
+    data_new[columnname] = columndata
+    data_new.to_csv(r'D:\PanDiaspora\pandiaspora_shiny\Rawdata\data_new.csv')     
 
 queries = [
     r'(Human[MeSH Terms] OR human population[MeSH Terms] )', 
@@ -117,13 +131,29 @@ queries = [
     r'(y_10[Filter])'
     ]
 booleans = ['AND', 'AND', 'AND', 'AND']
-r"metadata\abstract-HumanMeSHT-set.txt"
-createrepository(queries, booleans)
-# inp = r"metadata\abstract-HumanMeSHT-set.txt"
-# abstract = format_abstracts(inp)
-# combine_files("metadata\csv-HumanMeSHT-set.csv", "Abstracts", abstract)
-# meshterms = format_mesh("D:\PanDiaspora\metadata\pubmed-HumanMeSHT-set.txt")
-# combine_files("metadata\csv-HumanMeSHT-set.csv", "Mesh Terms", meshterms)
+files = glob.glob(r'D:\PanDiaspora\pandiaspora_shiny\Rawdata\*')
+for f in files:
+    os.remove(f)
 
+files = glob.glob(r'D:\PanDiaspora\pandiaspora_shiny\Data\*')
+for f in files:
+    os.remove(f)
 
+errorcatch = False
+while errorcatch == False:
+    try:   
+        createrepository(queries, booleans)
+        errorcatch = True
+    except:
+        errorcatch = False
+inp = r"D:\PanDiaspora\pandiaspora_shiny\Rawdata\abstract-HumanMeSHT-set.txt"
+abstract = format_abstracts(inp)
+combine_abs(r"D:\PanDiaspora\pandiaspora_shiny\Rawdata\csv-HumanMeSHT-set.csv", "Abstracts", abstract)
+meshterms = format_mesh(r"D:\PanDiaspora\pandiaspora_shiny\Rawdata\pubmed-HumanMeSHT-set.txt")
+combine_mesh(r"D:\PanDiaspora\pandiaspora_shiny\Rawdata\abs.csv", "Mesh Terms", meshterms)
+    
+import barByCountry 
+import barByYear
+import barByMesh
+import lineByCountry
 
