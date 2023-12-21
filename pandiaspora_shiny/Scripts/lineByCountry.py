@@ -65,11 +65,11 @@ def split_data(filename):
         for country in data[key]:
             temp.append(data[key][country])
         data2.append(temp)    
-    with open(r"D:\PanDiaspora\pandiaspora_shiny\Data\lineByCountry.csv", "w", newline='') as out:
+    with open(r"pandiaspora_shiny\Data\lineByCountry.csv", "w", newline='') as out:
         csv_out = csv.writer(out)
         csv_out.writerow(field_names)
         for row in data2:
             csv_out.writerow(row)
             out.flush()
 
-split_data(r"D:\PanDiaspora\pandiaspora_shiny\Rawdata\data_new.csv")
+split_data(r"pandiaspora_shiny\Rawdata\data_new.csv")

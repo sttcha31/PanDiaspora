@@ -43,7 +43,7 @@ def server(input, output, session):
     def my_widget():
         if input.x() == "year":
             if input.t() == "bargraph":
-                file = pd.read_csv(r"D:\PanDiaspora\pandiaspora_shiny\Data\barByYear.csv")
+                file = pd.read_csv(r"pandiaspora_shiny\Data\barByYear.csv")
                 fig = px.bar(
                             file,
                             x = "Year",
@@ -60,7 +60,7 @@ def server(input, output, session):
                 )
                 return fig
             if input.t() == "linegraph":
-                        file = pd.read_csv(r'D:\PanDiaspora\pandiaspora_shiny\Data\barByYear.csv')
+                        file = pd.read_csv(r'pandiaspora_shiny\Data\barByYear.csv')
                         fig = px.line(
                                     file,
                                     x = "Year",
@@ -77,7 +77,7 @@ def server(input, output, session):
                         return fig
         if input.x() == "country":
                 if input.t() == "bargraph":
-                    file = pd.read_csv(r"D:\PanDiaspora\pandiaspora_shiny\Data\barByCountry.csv")
+                    file = pd.read_csv(r"pandiaspora_shiny\Data\barByCountry.csv")
                     fig = px.bar(
                                 file,
                                 x = "Country",
@@ -93,7 +93,7 @@ def server(input, output, session):
                     )
                     return fig
                 if input.t() == "linegraph":
-                      file = pd.read_csv(r"D:\PanDiaspora\pandiaspora_shiny\Data\lineByCountry.csv")
+                      file = pd.read_csv(r"pandiaspora_shiny\Data\lineByCountry.csv")
                       fig = px.line(
                         file,
                         x = "Year",
@@ -109,7 +109,7 @@ def server(input, output, session):
     def table():
             if input.x() == "country":
                 if input.t() == "bargraph":
-                    df = pd.read_csv(r"D:\PanDiaspora\pandiaspora_shiny\Data\barByCountry.csv")
+                    df = pd.read_csv(r"pandiaspora_shiny\Data\barByCountry.csv")
                     fig = go.Figure(data=[go.Table(
                     header=dict(values=list(df.columns),
                                 fill_color='paleturquoise',
@@ -123,7 +123,7 @@ def server(input, output, session):
                     )
                     return fig
                 if input.t() == "linegraph":
-                    data = pd.read_csv(r"D:\PanDiaspora\pandiaspora_shiny\Data\lineByCountry.csv")
+                    data = pd.read_csv(r"pandiaspora_shiny\Data\lineByCountry.csv")
                     # header_values = ["Year"] + list(df.columns[1:])
                     # cells_values = [df.Year] + [df[column] for column in df.columns[1:]]
 

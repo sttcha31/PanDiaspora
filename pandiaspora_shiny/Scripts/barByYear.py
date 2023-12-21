@@ -17,7 +17,7 @@ def split_data(filename):
     for key in data:
         data2.append((int(key), data[key]))    
         data2 = sorted(data2)  
-    with open(r"D:\PanDiaspora\pandiaspora_shiny\Data\barByYear.csv", "w", newline='') as out:
+    with open(r"pandiaspora_shiny\Data\barByYear.csv", "w", newline='') as out:
         csv_out = csv.writer(out)
         csv_out.writerow(['Year', 'Frequency'])
         for row in data2:
@@ -26,4 +26,4 @@ def split_data(filename):
 
 
 
-split_data(r"D:\PanDiaspora\pandiaspora_shiny\Rawdata\data_new.csv")
+split_data(r"pandiaspora_shiny\Rawdata\data_new.csv")

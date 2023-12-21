@@ -12,7 +12,7 @@ import glob
 
 
 options = Options();
-prefs = {"download.default_directory" : r"D:\PanDiaspora\pandiaspora_shiny\Rawdata"};
+prefs = {"download.default_directory" : os.path.abspath("pandiaspora_shiny\Rawdata")};
 #example: prefs = {"download.default_directory" : "C:\Tutorial\down"};
 options.add_experimental_option("prefs",prefs);
 
@@ -75,7 +75,7 @@ def createrepository(queries, booleans):
     driver.find_element(By.XPATH, '/html/body/main/div[1]/div/form/div[2]/select').click()
     driver.find_element(By.XPATH, "/html/body/main/div[1]/div/form/div[2]/select/option[2]").click()
     driver.find_element(By.XPATH, '/html/body/main/div[1]/div/form/div[3]/button[1]').click()
-    wait_for_downloads(r"D:\PanDiaspora\pandiaspora_shiny\Rawdata")
+    wait_for_downloads(r"pandiaspora_shiny\Rawdata")
 
 def list_to_string(lst):
     if not isinstance(lst, list):
@@ -117,11 +117,11 @@ def format_mesh(filename):
 def combine_abs(csvfile, columnname, columndata):
     data_new = pd.read_csv(csvfile)
     data_new[columnname] = columndata
-    data_new.to_csv(r'D:\PanDiaspora\pandiaspora_shiny\Rawdata\abs.csv')             
+    data_new.to_csv(r'pandiaspora_shiny\Rawdata\abs.csv')             
 def combine_mesh(csvfile, columnname, columndata):
     data_new = pd.read_csv(csvfile)
     data_new[columnname] = columndata
-    data_new.to_csv(r'D:\PanDiaspora\pandiaspora_shiny\Rawdata\data_new.csv')     
+    data_new.to_csv(r'pandiaspora_shiny\Rawdata\data_new.csv')     
 
 queries = [
     r'(Human[MeSH Terms] OR human population[MeSH Terms] )', 
@@ -131,11 +131,11 @@ queries = [
     r'(y_10[Filter])'
     ]
 booleans = ['AND', 'AND', 'AND', 'AND']
-files = glob.glob(r'D:\PanDiaspora\pandiaspora_shiny\Rawdata\*')
+files = glob.glob(r'pandiaspora_shiny\Rawdata\*')
 for f in files:
     os.remove(f)
 
-files = glob.glob(r'D:\PanDiaspora\pandiaspora_shiny\Data\*')
+files = glob.glob(r'pandiaspora_shiny\Data\*')
 for f in files:
     os.remove(f)
 
@@ -146,11 +146,11 @@ while errorcatch == False:
         errorcatch = True
     except:
         errorcatch = False
-inp = r"D:\PanDiaspora\pandiaspora_shiny\Rawdata\abstract-HumanMeSHT-set.txt"
+inp = r"pandiaspora_shiny\Rawdata\abstract-HumanMeSHT-set.txt"
 abstract = format_abstracts(inp)
-combine_abs(r"D:\PanDiaspora\pandiaspora_shiny\Rawdata\csv-HumanMeSHT-set.csv", "Abstracts", abstract)
-meshterms = format_mesh(r"D:\PanDiaspora\pandiaspora_shiny\Rawdata\pubmed-HumanMeSHT-set.txt")
-combine_mesh(r"D:\PanDiaspora\pandiaspora_shiny\Rawdata\abs.csv", "Mesh Terms", meshterms)
+combine_abs(r"pandiaspora_shiny\Rawdata\csv-HumanMeSHT-set.csv", "Abstracts", abstract)
+meshterms = format_mesh(r"pandiaspora_shiny\Rawdata\pubmed-HumanMeSHT-set.txt")
+combine_mesh(r"pandiaspora_shiny\Rawdata\abs.csv", "Mesh Terms", meshterms)
     
 import barByCountry 
 import barByYear
