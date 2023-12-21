@@ -224,5 +224,5 @@ def server(input, output, session):
     def txt():
         return f"n*2 is {input.n() * 2}"
 
-df = pd.read_csv(r'D:\PanDiaspora\pandiaspora_shiny\Rawdata\data_new.csv')
+df = pd.read_csv(r'pandiaspora_shiny\Rawdata\data_new.csv')
 app = App(app_ui, server)
