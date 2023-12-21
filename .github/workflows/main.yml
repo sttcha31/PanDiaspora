@@ -1,0 +1,46 @@
+name: update repo
+
+on:
+  schedule:
+  - cron: "0 1 * * 3"
+
+jobs:
+    build:
+      runs-on: ubuntu-latest
+
+      steps:
+        - name: Set Timezone
+          uses: szenius/set-timezone@v1.0
+          with:
+            timezoneLinux: "Europe/Istanbul"
+        - name: Check repo
+          uses: actions/checkout@v2
+          
+        - name: Setup Python Verson
+          uses: actions/setup-python@v2
+          with:
+            python-version: 3.8
+        - name: Install Python dependencies
+          uses: py-action/py-depedency-install@v2
+          with:
+            path: "requirements.txt"
+        - name: Execute Python script
+          run: python searchscript.py
+
+        - name: Commit 
+          run: |
+            git config --local user.name sttcha31
+            git config --local user.name sttcha31@gmail.com
+            git add --all
+            git commit - am "GH Action Headline $(date)"
+            git push origin master
+          env:
+            REPO_KEY: ${{secrets.GITHUB_TOKEN}}
+            username: github-actions
+            
+          
+        
+            
+        
+        
+      
