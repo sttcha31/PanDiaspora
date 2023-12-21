@@ -1,11 +1,8 @@
 from shiny import App, render, ui
 from shinywidgets import output_widget, render_widget
 import pandas as pd
-import plotnine as gg
-from dash import Dash, dash_table
 import plotly.express as px
 import plotly.graph_objs as go
-import plotly.figure_factory as FF
 import seaborn as sns
 import matplotlib.pyplot as plt
 
